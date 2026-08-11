@@ -1,0 +1,16 @@
+[project]
+name = "rss-proxy"
+version = "0.1.0"
+description = "A small RSS feed rewrite proxy"
+requires-python = ">=3.11"
+dependencies = ["lxml"]
+
+[project.scripts]
+rss-proxy = "rss_proxy:main"
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["rss_proxy", "xml_rewriter"]

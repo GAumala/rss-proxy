@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rss version="2.0">
+
+        <channel>
+<title>MySite.com</title>
+<link>https://MySite.com</link>
+<description>The latest torrents from MySite.com</description>
+<language>en</language>
+<image><title>MySite.com</title>
+<url>https://MySite.com/favicon.ico</url>
+<link>https://MySite.com</link>
+<width>16</width>
+<height>16</height>
+</image>
+<item>
+
+            <title>Project.Fail.Mary.2026.1080p [11.79 GiB]</title>
+            <link>https://MySite.com/torrent/1111111/Project.Fail.Mary.2026.1080p</link>
+            <guid>https://MySite.com/torrent/1111111/Project.Fail.Mary.2026.1080p</guid>
+            <comments>https://MySite.com/torrent/1111111/Project.Fail.Mary.2026.1080p</comments>
+            <description>&lt;pre&gt;Project.Fail.Mary.2026.1080p
+
+A science teacher wakes up alone...
+
+&lt;.Crafted with FeNFO v1.6.6.&gt;
+&lt;img src="https://img.MySite.com/i/foo.jpg" alt="" /&gt;
+&lt;/pre&gt;</description>
+            <category>Movies/1080p</category>
+            <torrent:size>11.79 GiB</torrent:size>
+            <pubDate>Mon, 10 Aug 2026 14:54:30 +0200</pubDate></item>
+
+<item>
+
+            <title>Enter 8 (2025) (1080p ) [5.97 GiB]</title>
+            <link>https://MySite.com/torrent/2222222/Enter 8 (2025) (1080p )</link>
+            <guid>https://MySite.com/torrent/2222222/Enter 8 (2025) (1080p )</guid>
+            <comments>https://MySite.com/torrent/2222222/Enter 8 (2025) (1080p )</comments>
+            <description>&lt;pre&gt;&lt;a href="https://slow.pics/c/bar" title="https://slow.pics/c/foo"&gt;COMPARISONS&lt;/a&gt;
+SOURCE
+RELEASE         : Enter.8.2025.1080p.Remux.mkv (Thanks!)
+FILE SIZE       : 22.4 GiB
+RESOLUTION      : 1920 x 1080
+&lt;img src="https://img.MySite.com/i/1111.png" alt="" /&gt;
+&lt;img src="https://img.MySite.com/i/2222.png" alt="" /&gt;
+&lt;img src="https://img.MySite.com/i/3333.png" alt="" /&gt;
+&lt;img src="https://img.MySite.com/i/4444.png" alt="" /&gt;
+&lt;img src="https://img.MySite.com/i/5555.png" alt="" /&gt;
+&lt;img src="https://img.MySite.com/i/6666.png" alt="" /&gt;
+&lt;/pre&gt;</description>
+            <category>Movies/1080p</category>
+            <torrent:size>5.97 GiB</torrent:size>
+            <pubDate>Mon, 10 Aug 2026 10:13:00 +0200</pubDate></item>
+
+</channel>
+</rss>
