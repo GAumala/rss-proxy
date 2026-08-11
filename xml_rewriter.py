@@ -32,14 +32,18 @@ class XmlRewriter:
     matching value from the current ``<item>`` element.
     """
 
-    def __init__(self, rewrites):
+    def __init__(self, rewrites, exclude=None):
         self.rewrites = rewrites
+        self.exclude = exclude or []
 
     def rewrite(self, payload):
         parser = ET.XMLParser(recover=True, huge_tree=True, resolve_entities=False)
         root = ET.fromstring(payload, parser=parser)
         namespaces = self._collect_namespaces(root)
         for item in root.findall(".//item"):
+            if self._should_exclude(item, namespaces):
+                item.getparent().remove(item)
+                continue
             for target, template in self.rewrites.items():
                 element = self._find_or_create_child(item, target, namespaces)
                 if element is None:
@@ -86,6 +90,17 @@ class XmlRewriter:
                 return "" if child.text is None else child.text
 
         return ""
+
+    def _should_exclude(self, item, namespaces):
+        for rule in self.exclude:
+            field = rule.get("field")
+            values = rule.get("values", [])
+            if not field or not isinstance(values, list):
+                continue
+            item_value = self._find_item_value(item, field, namespaces).strip()
+            if item_value in {str(value).strip() for value in values}:
+                return True
+        return False
 
     def _render_template(self, template, item, namespaces):
         return TEMPLATE_PLACEHOLDER_RE.sub(

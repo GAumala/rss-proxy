@@ -9,8 +9,8 @@ FIXTURES = Path(__file__).parent / "fixtures"
 
 class XmlRewriterTests(unittest.TestCase):
     def test_rewrites_sample_feed(self):
-        payload = (FIXTURES / "sample.input.xml").read_bytes()
-        expected = (FIXTURES / "sample.output.xml").read_bytes().removesuffix(b"\n")
+        payload = (FIXTURES / "rewrite-sample.input.xml").read_bytes()
+        expected = (FIXTURES / "rewrite-sample.output.xml").read_bytes().removesuffix(b"\n")
 
         rewritten = XmlRewriter({"title": "$title [$torrent:size]", "link": "$guid"}).rewrite(payload)
 
@@ -22,6 +22,17 @@ class XmlRewriterTests(unittest.TestCase):
         rewritten = XmlRewriter({"title": "$title + extra"}).rewrite(payload)
 
         self.assertIn(b"<title>Old + extra</title>", rewritten)
+
+    def test_excludes_items_with_matching_field_value(self):
+        payload = (FIXTURES / "filter-sample.input.xml").read_bytes()
+        expected = (FIXTURES / "filter-sample.output.xml").read_bytes().removesuffix(b"\n")
+
+        rewritten = XmlRewriter(
+            {},
+            [{"field": "category", "values": ["Music Videos", "TV/SD"]}],
+        ).rewrite(payload)
+
+        self.assertEqual(expected, rewritten)
 
 
 if __name__ == "__main__":

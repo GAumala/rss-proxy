@@ -1,0 +1,62 @@
+<rss version="2.0">
+
+        <channel>
+<title>MySite.com</title>
+<link>https://MySite.com</link>
+<description>The latest torrents from MySite.com</description>
+<language>en</language>
+<image><title>MySite.com</title>
+<url>https://MySite.com/favicon.ico</url>
+<link>https://MySite.com</link>
+<width>16</width>
+<height>16</height>
+</image>
+<item>
+
+            <title>Project.Fail.Mary.2026.1080p</title>
+            <link>https://MySite.com/api/v1/torrents/download/1111111/REDACTED</link>
+            <guid>https://MySite.com/torrent/1111111/Project.Fail.Mary.2026.1080p</guid>
+            <comments>https://MySite.com/torrent/1111111/Project.Fail.Mary.2026.1080p</comments>
+            <description><![CDATA[<pre>Project.Fail.Mary.2026.1080p
+
+A science teacher wakes up alone...
+
+<.Crafted with FeNFO v1.6.6.>
+<img src="https://img.MySite.com/i/foo.jpg" alt="" />
+</pre>]]></description>
+            <category>Movies/1080p</category>
+            <torrent:size>11.79 GiB</torrent:size>
+            <pubDate>Mon, 10 Aug 2026 14:54:30 +0200</pubDate></item>
+
+<item>
+
+            <title>Music Clip Collection 2026</title>
+            <link>https://MySite.com/api/v1/torrents/download/2222222/REDACTED</link>
+            <guid>https://MySite.com/torrent/2222222/Music Clip Collection 2026</guid>
+            <comments>https://MySite.com/torrent/2222222/Music Clip Collection 2026</comments>
+            <description><![CDATA[<pre><a href="https://slow.pics/c/bar" title="https://slow.pics/c/foo">COMPARISONS</a>
+SOURCE
+RELEASE         : Music.Clip.Collection.2026.1080p.mkv (Thanks!)
+FILE SIZE       : 1.2 GiB
+RESOLUTION      : 1920 x 1080
+</pre>]]></description>
+            <category>Music Videos</category>
+            <torrent:size>1.20 GiB</torrent:size>
+            <pubDate>Mon, 10 Aug 2026 10:13:00 +0200</pubDate></item>
+
+<item>
+
+            <title>Retro TV Episodes 1998</title>
+            <link>https://MySite.com/api/v1/torrents/download/3333333/REDACTED</link>
+            <guid>https://MySite.com/torrent/3333333/Retro TV Episodes 1998</guid>
+            <comments>https://MySite.com/torrent/3333333/Retro TV Episodes 1998</comments>
+            <description><![CDATA[<pre>Retro TV Episodes 1998
+
+<img src="https://img.MySite.com/i/abc123.png" alt="" />
+</pre>]]></description>
+            <category>TV/SD</category>
+            <torrent:size>700 MiB</torrent:size>
+            <pubDate>Mon, 10 Aug 2026 09:00:00 +0200</pubDate></item>
+
+</channel>
+</rss>

@@ -2,7 +2,7 @@
 import argparse
 import sys
 import time
-import tomllib
+import threading
 import urllib.error
 import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -10,26 +10,12 @@ from pathlib import Path
 
 from lxml import etree as ET
 
+from feed_config import FeedConfigManager
 from xml_rewriter import XmlRewriter
 
 
 CACHE_TTL_SECONDS = 60
-MAX_FEED_BYTES = 256 * 1024
-
-
-def load_config(path):
-    with path.open("rb") as config_file:
-        config = tomllib.load(config_file)
-
-    feeds = {}
-    for name, feed in config.items():
-        if not isinstance(feed, dict):
-            continue
-        if "url" not in feed:
-            raise ValueError(f"[{name}] is missing required 'url'")
-        rewrites = {key: value for key, value in feed.items() if key != "url"}
-        feeds[name] = {"url": feed["url"], "rewrites": rewrites}
-    return feeds
+MAX_FEED_BYTES = 512 * 1024
 
 
 def fetch_feed(url):
@@ -44,38 +30,42 @@ def fetch_feed(url):
     return payload
 
 
-def make_handler(feeds):
+def make_handler(config_manager):
     cache = {}
+    lock = threading.RLock()
 
     class RssProxyHandler(BaseHTTPRequestHandler):
         def do_GET(self):
-            feed_name = self.path.lstrip("/").split("?", 1)[0]
-            if feed_name.endswith(".xml"):
-                feed_name = feed_name[:-4]
+            with lock:
+                try:
+                    config_manager.reload_if_changed(cache)
 
-            feed = feeds.get(feed_name)
-            if feed is None:
-                self.send_error(404, "unknown feed")
-                return
+                    feed_name = self.path.lstrip("/").split("?", 1)[0]
+                    if feed_name.endswith(".xml"):
+                        feed_name = feed_name[:-4]
 
-            try:
-                cached = cache.get(feed_name)
-                now = time.monotonic()
-                if cached is None or now >= cached["expires_at"]:
-                    payload = fetch_feed(feed["url"])
-                    rewritten = XmlRewriter(feed["rewrites"]).rewrite(payload)
-                    cached = {"payload": rewritten, "expires_at": now + CACHE_TTL_SECONDS}
-                    cache[feed_name] = cached
-                rewritten = cached["payload"]
-            except urllib.error.URLError as error:
-                self.send_error(502, f"upstream fetch failed: {error}")
-                return
-            except ET.XMLSyntaxError as error:
-                self.send_error(502, f"upstream XML parse failed: {error}")
-                return
-            except ValueError as error:
-                self.send_error(502, str(error))
-                return
+                    feed = config_manager.feeds.get(feed_name)
+                    if feed is None:
+                        self.send_error(404, "unknown feed")
+                        return
+
+                    cached = cache.get(feed_name)
+                    now = time.monotonic()
+                    if cached is None or now >= cached["expires_at"]:
+                        payload = fetch_feed(feed["url"])
+                        rewritten = XmlRewriter(feed["rewrites"], feed["exclude"]).rewrite(payload)
+                        cached = {"payload": rewritten, "expires_at": now + CACHE_TTL_SECONDS}
+                        cache[feed_name] = cached
+                    rewritten = cached["payload"]
+                except urllib.error.URLError as error:
+                    self.send_error(502, f"upstream fetch failed: {error}")
+                    return
+                except ET.XMLSyntaxError as error:
+                    self.send_error(502, f"upstream XML parse failed: {error}")
+                    return
+                except ValueError as error:
+                    self.send_error(502, str(error))
+                    return
 
             self.send_response(200)
             self.send_header("Content-Type", "application/rss+xml; charset=utf-8")
@@ -96,9 +86,9 @@ def main():
     parser.add_argument("--port", default=8080, type=int, help="port to bind")
     args = parser.parse_args()
 
-    feeds = load_config(args.config)
-    server = ThreadingHTTPServer((args.host, args.port), make_handler(feeds))
-    print(f"Serving {len(feeds)} feed(s) on http://{args.host}:{args.port}")
+    config_manager = FeedConfigManager(args.config)
+    server = ThreadingHTTPServer((args.host, args.port), make_handler(config_manager))
+    print(f"Serving {len(config_manager.feeds)} feed(s) on http://{args.host}:{args.port}")
     server.serve_forever()
 
 
