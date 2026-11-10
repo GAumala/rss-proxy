@@ -58,4 +58,4 @@ The server reloads `feeds.toml` automatically when the file changes and clears t
 
 ## Limits
 
-Upstream feed responses are limited to 512 KiB. Rewritten feeds are cached in memory for 60 seconds per route.
+Upstream feed responses are limited to 1 MiB. Rewritten feeds are cached in memory for 60 seconds per route.

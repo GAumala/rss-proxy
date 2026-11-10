@@ -1,11 +1,41 @@
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from feed_config import FeedConfigManager, load_config
+from rss_proxy import MAX_FEED_BYTES, fetch_feed
+
+
+class FakeResponse:
+    def __init__(self, payload):
+        self.payload = payload
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        pass
+
+    def read(self, size):
+        return self.payload[:size]
 
 
 class RssProxyTests(unittest.TestCase):
+    @patch("rss_proxy.urllib.request.urlopen")
+    def test_fetch_feed_accepts_feeds_above_the_old_512_kib_limit(self, urlopen):
+        payload = b"x" * (512 * 1024 + 1)
+        urlopen.return_value = FakeResponse(payload)
+
+        self.assertEqual(payload, fetch_feed("https://example.com/feed.xml"))
+
+    @patch("rss_proxy.urllib.request.urlopen")
+    def test_fetch_feed_rejects_feeds_above_the_limit(self, urlopen):
+        urlopen.return_value = FakeResponse(b"x" * (MAX_FEED_BYTES + 1))
+
+        with self.assertRaisesRegex(ValueError, f"exceeds {MAX_FEED_BYTES} bytes"):
+            fetch_feed("https://example.com/feed.xml")
+
     def test_load_config_keeps_exclude_separate_from_rewrites(self):
         with tempfile.TemporaryDirectory() as directory:
             config_path = Path(directory) / "feeds.toml"

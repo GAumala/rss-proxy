@@ -15,7 +15,7 @@ from xml_rewriter import XmlRewriter
 
 
 CACHE_TTL_SECONDS = 60
-MAX_FEED_BYTES = 512 * 1024
+MAX_FEED_BYTES = 1024 * 1024
 
 
 def fetch_feed(url):
